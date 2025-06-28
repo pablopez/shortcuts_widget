@@ -3,7 +3,7 @@ export interface Action {
   description: string;
 }
 
-export const actions: Record<string, Action> = {
+export const defaultActions: Record<string, Action> = {
   greet: {
     fn: () => alert('Hello from greet'),
     description: 'Show a greeting alert',
@@ -12,4 +12,14 @@ export const actions: Record<string, Action> = {
     fn: () => alert('Goodbye from farewell'),
     description: 'Show a farewell alert',
   },
+};
+
+export let actions: Record<string, Action> = { ...defaultActions };
+
+export const setActions = (newActions: Record<string, Action>) => {
+  actions = newActions;
+};
+
+export const resetActions = () => {
+  actions = { ...defaultActions };
 };
