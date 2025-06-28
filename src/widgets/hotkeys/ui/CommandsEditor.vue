@@ -53,29 +53,52 @@
 import { ref, reactive } from 'vue';
 import { actions } from '../actions';
 import { keymap } from '../keymap';
-import { updateKeymap } from '../useHotkeys';
+import {
+  updateKeymap,
+  useHotkeys,
+} from '../useHotkeys';
 
 const show = ref(false);
 const editing = ref<string | null>(null);
 const localKeymap = reactive({ ...keymap });
 
+const { enabled, disableHotkeys, enableHotkeys } = useHotkeys();
+let hotkeysPaused = false;
+
 const startEditing = (name: string) => {
   editing.value = name;
+  hotkeysPaused = enabled.value;
+  if (hotkeysPaused) {
+    disableHotkeys();
+  }
   const handler = (e: KeyboardEvent) => {
     if (['control', 'shift', 'alt', 'meta'].includes(e.key.toLowerCase())) {
       return;
     }
     e.preventDefault();
+    e.stopPropagation();
     const parts: string[] = [];
     if (e.ctrlKey) parts.push('ctrl');
     if (e.shiftKey) parts.push('shift');
     if (e.altKey) parts.push('alt');
     if (e.metaKey) parts.push('meta');
     parts.push(e.key.toLowerCase());
-    localKeymap[name] = parts.join('+');
+    const combo = parts.join('+');
+    const duplicate = Object.entries(localKeymap).some(
+      ([cmd, val]) => cmd !== name && val === combo,
+    );
+    if (duplicate) {
+      alert('comando ya está usado');
+      return;
+    }
+    localKeymap[name] = combo;
     updateKeymap({ ...localKeymap });
     editing.value = null;
     window.removeEventListener('keydown', handler, true);
+    if (hotkeysPaused) {
+      enableHotkeys();
+    }
+    hotkeysPaused = false;
   };
   window.addEventListener('keydown', handler, true);
 };
@@ -83,6 +106,10 @@ const startEditing = (name: string) => {
 const close = () => {
   show.value = false;
   editing.value = null;
+  if (hotkeysPaused) {
+    enableHotkeys();
+    hotkeysPaused = false;
+  }
 };
 
 const exportFile = () => {
