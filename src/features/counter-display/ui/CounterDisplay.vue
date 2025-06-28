@@ -1,5 +1,5 @@
 <template>
-  <p>Count: {{ counter.count }}</p>
+  <p class="text-xl font-bold">Count: {{ counter.count }}</p>
 </template>
 
 <script setup lang="ts">

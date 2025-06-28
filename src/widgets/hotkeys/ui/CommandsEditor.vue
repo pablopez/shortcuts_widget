@@ -1,39 +1,48 @@
 <template>
   <div>
-    <button @click="show = true">Editar Comandos</button>
+    <button
+      @click="show = true"
+      class="bg-blue-500 text-white px-4 py-2 rounded mb-2"
+    >
+      Editar Comandos
+    </button>
     <div
       v-if="show"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
     >
-      <div class="bg-white p-4 rounded max-h-[90vh] overflow-auto">
-        <h2>Editar comandos</h2>
-        <table>
+      <div class="bg-white p-6 rounded shadow-lg max-h-[90vh] overflow-auto">
+        <h2 class="text-xl font-semibold mb-4">Editar comandos</h2>
+        <table class="table-auto w-full border-collapse">
           <thead>
-            <tr>
-              <th>Título</th>
-              <th>Comando</th>
-              <th>Descripción</th>
-              <th></th>
+            <tr class="bg-gray-100 text-left">
+              <th class="p-2 border-b">Comando</th>
+              <th class="p-2 border-b">Descripción</th>
+              <th class="p-2 border-b"></th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(combo, name) in localKeymap" :key="name">
-              <td>{{ name }}</td>
-              <td>
+            <tr v-for="(combo, name) in localKeymap" :key="name" class="odd:bg-gray-50">
+              <td class="p-2 border-b">
                 <span v-if="editing !== name">{{ combo }}</span>
                 <span v-else>Pulse combinación de botones</span>
               </td>
-              <td>{{ actions[name]?.description }}</td>
-              <td>
-                <button v-if="editing !== name" @click="startEditing(name)">Editar</button>
+              <td class="p-2 border-b">{{ actions[name]?.description }}</td>
+              <td class="p-2 border-b text-right">
+                <button
+                  v-if="editing !== name"
+                  @click="startEditing(name)"
+                  class="bg-blue-500 text-white px-2 py-1 rounded"
+                >
+                  Editar
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
-        <div class="mt-4 flex gap-2">
-          <button @click="exportFile">Exportar</button>
-          <input type="file" @change="importFile" accept="application/json" />
-          <button @click="close">Cerrar</button>
+        <div class="mt-4 flex gap-2 justify-end">
+          <button @click="exportFile" class="bg-green-500 text-white px-3 py-1 rounded">Exportar</button>
+          <input type="file" @change="importFile" accept="application/json" class="border" />
+          <button @click="close" class="bg-red-500 text-white px-3 py-1 rounded">Cerrar</button>
         </div>
       </div>
     </div>
