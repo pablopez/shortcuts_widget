@@ -84,6 +84,14 @@ const startEditing = (name: string) => {
     if (e.metaKey) parts.push('meta');
     parts.push(e.key.toLowerCase());
     const combo = parts.join('+');
+    // Some key combinations like ctrl+w or ctrl+t cannot be captured on
+    // Chrome because the browser reserves them for closing or opening
+    // tabs. Show a warning and ignore these combinations so the page
+    // does not unexpectedly close while editing.
+    if (combo === 'ctrl+w' || combo === 'ctrl+t') {
+      alert('La combinación "' + combo + '" no puede usarse en Chrome');
+      return;
+    }
     const duplicate = Object.entries(localKeymap).some(
       ([cmd, val]) => cmd !== name && val === combo,
     );
