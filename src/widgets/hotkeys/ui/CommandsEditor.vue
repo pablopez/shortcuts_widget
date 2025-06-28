@@ -75,9 +75,9 @@ const startEditing = (name: string) => {
     localKeymap[name] = parts.join('+');
     updateKeymap({ ...localKeymap });
     editing.value = null;
-    window.removeEventListener('keydown', handler);
+    window.removeEventListener('keydown', handler, true);
   };
-  window.addEventListener('keydown', handler);
+  window.addEventListener('keydown', handler, true);
 };
 
 const close = () => {
