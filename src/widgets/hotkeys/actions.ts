@@ -3,7 +3,7 @@ export interface Action {
   description: string;
 }
 import { useCounterStore } from '@/entities/counter/model';
-const counter = useCounterStore();
+
 export const defaultActions: Record<string, Action> = {
   greet: {
     fn: () => alert('Hello from greet'),
@@ -15,12 +15,14 @@ export const defaultActions: Record<string, Action> = {
   },
   increment: {
     fn: () => {
+      const counter = useCounterStore();
       counter.add(1);
     },
     description:"incrementa 1"
   },
   decrement: {
     fn: () => {
+      const counter = useCounterStore();
       counter.add(-1);
     },
     description:"decrementa 1"
