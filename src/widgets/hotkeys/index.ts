@@ -1,3 +1,1 @@
-export { useHotkeys, enableHotkeys, disableHotkeys, toggleHotkeys } from './useHotkeys';
-export type { Action } from './actions';
-export { actions } from './actions';
+export { default as HotkeysToggle } from './ui/HotkeysToggle.vue';
