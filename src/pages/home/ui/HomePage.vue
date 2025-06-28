@@ -8,5 +8,5 @@
 <script setup lang="ts">
 import { CounterDisplay } from '@/features/counter-display';
 import { IncrementButton } from '@/features/counter-increment';
-import { HotkeysToggle } from '@/features/hotkeys-toggle';
+import { HotkeysToggle } from '@/widgets/hotkeys';
 </script>
