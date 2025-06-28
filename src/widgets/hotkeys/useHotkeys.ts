@@ -9,7 +9,10 @@ const bindShortcuts = () => {
   Object.entries(keymap).forEach(([name, combo]) => {
     const action = actions[name];
     if (action) {
-      hotkeys(combo, action.fn);
+      hotkeys(combo, (event) => {
+        event.preventDefault();
+        action.fn();
+      });
     }
   });
 };
