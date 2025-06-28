@@ -3,6 +3,8 @@ import { reactive } from 'vue';
 export const defaultKeymap: Record<string, string> = {
   greet: 'ctrl+g',
   farewell: 'ctrl+f',
+  increment: 'ctrl+x',
+  decrement: 'ctrl+z',
 };
 
 export const keymap = reactive({ ...defaultKeymap });
