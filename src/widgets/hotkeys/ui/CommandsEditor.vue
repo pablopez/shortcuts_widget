@@ -1,8 +1,11 @@
 <template>
   <div>
     <button @click="show = true">Editar Comandos</button>
-    <div v-if="show" class="modal">
-      <div class="modal-content">
+    <div
+      v-if="show"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+    >
+      <div class="bg-white p-4 rounded max-h-[90vh] overflow-auto">
         <h2>Editar comandos</h2>
         <table>
           <thead>
@@ -27,7 +30,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="controls">
+        <div class="mt-4 flex gap-2">
           <button @click="exportFile">Exportar</button>
           <input type="file" @change="importFile" accept="application/json" />
           <button @click="close">Cerrar</button>
@@ -109,28 +112,3 @@ const importFile = (e: Event) => {
 };
 </script>
 
-<style scoped>
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.modal-content {
-  background: white;
-  padding: 1rem;
-  border-radius: 4px;
-  max-height: 90vh;
-  overflow: auto;
-}
-.controls {
-  margin-top: 1rem;
-  display: flex;
-  gap: 0.5rem;
-}
-</style>
