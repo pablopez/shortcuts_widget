@@ -50,21 +50,22 @@ const localKeymap = reactive({ ...keymap });
 const startEditing = (name: string) => {
   editing.value = name;
   const handler = (e: KeyboardEvent) => {
+    if (['control', 'shift', 'alt', 'meta'].includes(e.key.toLowerCase())) {
+      return;
+    }
     e.preventDefault();
     const parts: string[] = [];
-    if (e.ctrlKey || e.key.toLowerCase() === 'control') parts.push('ctrl');
-    if (e.shiftKey || e.key.toLowerCase() === 'shift') parts.push('shift');
-    if (e.altKey || e.key.toLowerCase() === 'alt') parts.push('alt');
-    if (e.metaKey || e.key.toLowerCase() === 'meta') parts.push('meta');
-    const main = e.key.toLowerCase();
-    if (!['control', 'shift', 'alt', 'meta'].includes(main)) {
-      parts.push(main);
-    }
+    if (e.ctrlKey) parts.push('ctrl');
+    if (e.shiftKey) parts.push('shift');
+    if (e.altKey) parts.push('alt');
+    if (e.metaKey) parts.push('meta');
+    parts.push(e.key.toLowerCase());
     localKeymap[name] = parts.join('+');
     updateKeymap({ ...localKeymap });
     editing.value = null;
+    window.removeEventListener('keydown', handler);
   };
-  window.addEventListener('keydown', handler, { once: true });
+  window.addEventListener('keydown', handler);
 };
 
 const close = () => {
