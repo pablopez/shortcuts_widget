@@ -18,12 +18,11 @@
               <td>{{ name }}</td>
               <td>
                 <span v-if="editing !== name">{{ combo }}</span>
-                <input v-else v-model="localKeymap[name]" />
+                <span v-else>Pulse combinación de botones</span>
               </td>
               <td>{{ actions[name]?.description }}</td>
               <td>
-                <button v-if="editing !== name" @click="editing = name">Editar</button>
-                <button v-else @click="save(name)">Guardar</button>
+                <button v-if="editing !== name" @click="startEditing(name)">Editar</button>
               </td>
             </tr>
           </tbody>
@@ -48,9 +47,24 @@ const show = ref(false);
 const editing = ref<string | null>(null);
 const localKeymap = reactive({ ...keymap });
 
-const save = (name: string) => {
-  editing.value = null;
-  updateKeymap({ ...localKeymap });
+const startEditing = (name: string) => {
+  editing.value = name;
+  const handler = (e: KeyboardEvent) => {
+    e.preventDefault();
+    const parts: string[] = [];
+    if (e.ctrlKey || e.key.toLowerCase() === 'control') parts.push('ctrl');
+    if (e.shiftKey || e.key.toLowerCase() === 'shift') parts.push('shift');
+    if (e.altKey || e.key.toLowerCase() === 'alt') parts.push('alt');
+    if (e.metaKey || e.key.toLowerCase() === 'meta') parts.push('meta');
+    const main = e.key.toLowerCase();
+    if (!['control', 'shift', 'alt', 'meta'].includes(main)) {
+      parts.push(main);
+    }
+    localKeymap[name] = parts.join('+');
+    updateKeymap({ ...localKeymap });
+    editing.value = null;
+  };
+  window.addEventListener('keydown', handler, { once: true });
 };
 
 const close = () => {
