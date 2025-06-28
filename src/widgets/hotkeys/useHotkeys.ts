@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import hotkeys from 'hotkeys-js';
 import { actions, setActions, Action } from './actions';
-import { keymap } from './keymap';
+import { keymap, setKeymap } from './keymap';
 
 const enabled = ref(false);
 
@@ -53,6 +53,16 @@ export const updateActions = (newActions: Record<string, Action>) => {
   }
 };
 
+export const updateKeymap = (newKeymap: Record<string, string>) => {
+  if (enabled.value) {
+    unbindShortcuts();
+  }
+  setKeymap(newKeymap);
+  if (enabled.value) {
+    bindShortcuts();
+  }
+};
+
 export const useHotkeys = () => {
   return {
     enabled,
@@ -60,5 +70,6 @@ export const useHotkeys = () => {
     disableHotkeys,
     toggleHotkeys,
     updateActions,
+    updateKeymap,
   };
 };
